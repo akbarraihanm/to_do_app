@@ -12,15 +12,20 @@ class MainLocalService {
     return Get.find<Box<ToDoBox>>().add(body);
   }
 
-  Future update(MainBody body) async {
+  Future<int> update(MainBody body) async {
     final data = await getList();
     for (var e in data) {
       if (e.key == body.key) {
         e.status = body.status;
-        return e.save();
+        try {
+          e.save();
+          return 1;
+        } catch (ex) {
+          return 0;
+        }
       }
     }
-    return;
+    return 0;
   }
 
   Future delete(ToDoBox body) async {

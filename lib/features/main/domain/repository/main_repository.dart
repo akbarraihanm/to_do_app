@@ -6,6 +6,6 @@ import 'package:to_do_app/features/main/domain/entity/todo_entity.dart';
 abstract class MainLocalRepository {
   Future<Resource<Iterable<TodoEntity>>> getList();
   Future<Resource<int>> create(ToDoBox body);
-  Future update(MainBody body);
+  Future<Resource<int>> update(MainBody body);
   Future delete(ToDoBox body);
 }

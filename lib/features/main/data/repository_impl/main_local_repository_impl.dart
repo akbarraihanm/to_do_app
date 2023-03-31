@@ -45,9 +45,10 @@ class MainLocalRepositoryImpl implements MainLocalRepository {
   }
 
   @override
-  Future update(MainBody body) async {
+  Future<Resource<int>> update(MainBody body) async {
     try {
-      return await dataSource.update(body);
+      final result = await dataSource.update(body);
+      return Resource.success(result);
     } catch (ex) {
       debugPrint("Error : $ex");
       return Resource.error("An error occurred");

@@ -17,7 +17,7 @@ class MainUseCase {
     return repository.create(body);
   }
 
-  Future update(MainBody body) {
+  Future<Resource<int>> update(MainBody body) {
     return repository.update(body);
   }
 

@@ -5,7 +5,7 @@ import 'package:to_do_app/features/main/data/service/main_local_service.dart';
 abstract class MainLocalDataSource {
   Future<Iterable<ToDoBox>> getList();
   Future<int> create(ToDoBox body);
-  Future update(MainBody body);
+  Future<int> update(MainBody body);
   Future delete(ToDoBox body);
 }
 
@@ -30,7 +30,7 @@ class MainLocalDataSourceImpl implements MainLocalDataSource {
   }
 
   @override
-  Future update(MainBody body) {
+  Future<int> update(MainBody body) {
     return service.update(body);
   }
 
