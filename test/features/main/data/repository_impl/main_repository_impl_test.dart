@@ -1,10 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:to_do_app/core/util/resource.dart';
 import 'package:to_do_app/database/boxes/todo_box.dart';
 import 'package:to_do_app/features/main/data/data_source/main_local_data_source.dart';
 import 'package:to_do_app/features/main/data/model/main_body.dart';
 import 'package:to_do_app/features/main/data/repository_impl/main_local_repository_impl.dart';
 import 'package:to_do_app/features/main/domain/repository/main_repository.dart';
+import 'package:to_do_app/features/main/mapper.dart';
 
 class MockDataSource extends Mock implements MainLocalDataSource {}
 
@@ -36,7 +38,7 @@ void main() {
       when(() => dataSource.getList()).thenAnswer((_) async => iterable);
 
       final result = await repository.getList();
-      expect(result, iterable);
+      expect(result.data?.first.todo, iterable.map((e) => e.toEntity()).toList().first.todo);
     });
 
     test(
@@ -46,7 +48,7 @@ void main() {
       when(() => dataSource.create(body)).thenAnswer((_) async => 1);
 
       final result = await repository.create(body);
-      expect(result, 1);
+      expect(result.data, Resource.success(1).data);
     });
 
     test(
@@ -56,7 +58,7 @@ void main() {
       when(() => dataSource.update(updateBody)).thenAnswer((_) async => 1);
 
       final result = await repository.update(updateBody);
-      expect(result, 1);
+      expect(result.data, Resource.success(1).data);
     });
   });
 }

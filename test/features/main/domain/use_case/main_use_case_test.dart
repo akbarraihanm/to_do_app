@@ -3,9 +3,9 @@ import 'package:mocktail/mocktail.dart';
 import 'package:to_do_app/core/util/resource.dart';
 import 'package:to_do_app/database/boxes/todo_box.dart';
 import 'package:to_do_app/features/main/data/model/main_body.dart';
+import 'package:to_do_app/features/main/domain/entity/todo_entity.dart';
 import 'package:to_do_app/features/main/domain/repository/main_repository.dart';
 import 'package:to_do_app/features/main/domain/use_case/main_use_case.dart';
-import 'package:to_do_app/features/main/mapper.dart';
 
 class MockRepository extends Mock implements MainLocalRepository {}
 
@@ -18,8 +18,13 @@ void main() {
     useCase = MainUseCase(repository);
   });
 
-  Iterable<ToDoBox> iterable = [
-    ToDoBox(),
+  Iterable<TodoEntity> iterable = [
+    TodoEntity(
+      todo: '',
+      date: DateTime.parse("2020-01-01"),
+      status: 0,
+      key: '',
+    ),
   ];
 
   final body = ToDoBox();
@@ -35,11 +40,11 @@ void main() {
         'When get list '
         'Then it should return correct data', () async {
       when(() => repository.getList()).thenAnswer((_) async {
-        return Resource(iterable.map((e) => e.toEntity()).toList());
+        return Resource.success(iterable);
       });
 
       final result = await useCase.getList();
-      expect(result, iterable);
+      expect(result.data, iterable);
     });
 
     test(
@@ -47,11 +52,11 @@ void main() {
         'When create to-do success '
         'Then it should return 1', () async {
       when(() => repository.create(body)).thenAnswer((_) async {
-        return Resource(1);
+        return Resource.success(1);
       });
 
       final result = await useCase.create(body);
-      expect(result, 1);
+      expect(result.data, 1);
     });
 
     test(
@@ -59,10 +64,10 @@ void main() {
         'When update to-do success '
         'Then it should return 1', () async {
       when(() => repository.update(updateBody))
-          .thenAnswer((_) async => Resource(1));
+          .thenAnswer((_) async => Resource.success(1));
 
       final result = await useCase.update(updateBody);
-      expect(result, 1);
+      expect(result.data, 1);
     });
   });
 }
